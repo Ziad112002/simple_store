@@ -60,7 +60,7 @@ class ProductWidget extends StatelessWidget {
   Widget buildPriceRow() => Row(
     mainAxisAlignment: .start,
     children: [
-      Text(product.price, style: AppTextStyle.black12SemiBold),
+      Text("${product.price.toInt()} EGP", style: AppTextStyle.black12SemiBold),
       Spacer(),
       IconButton(
         icon: Icon(Icons.shopping_cart_checkout, color: AppColors.darkBlue),

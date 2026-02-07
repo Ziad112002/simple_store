@@ -1,3 +1,4 @@
+import 'package:cart_app/ui/screens/cart_screen.dart';
 import 'package:cart_app/ui/utils/app_assets.dart';
 import 'package:cart_app/ui/utils/app_colors.dart';
 import 'package:cart_app/ui/utils/app_constants.dart';
@@ -19,7 +20,7 @@ class ProductsScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              buildHeader(),
+              buildHeader(context),
               SizedBox(height: MediaQuery.of(context).size.height*.028,),
               Expanded(
                 child: GridView.builder(
@@ -42,11 +43,13 @@ class ProductsScreen extends StatelessWidget {
     );
   }
 
- Row buildHeader()=>Row(
+ Row buildHeader(BuildContext context)=>Row(
    children: [
      Image.asset(AppAssets.appLogo),
      Spacer(),
-     IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart,color: AppColors.darkBlue,))
+     IconButton(onPressed: (){
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
+     }, icon: Icon(Icons.shopping_cart,color: AppColors.darkBlue,))
    ],
  );
 }
