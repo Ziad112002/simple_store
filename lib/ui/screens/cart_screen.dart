@@ -1,17 +1,18 @@
-import 'package:cart_app/ui/model/product_model.dart';
 import 'package:cart_app/ui/utils/app_colors.dart';
-import 'package:cart_app/ui/utils/app_constants.dart';
 import 'package:cart_app/ui/utils/app_text_style.dart';
 import 'package:cart_app/ui/widgets/button_widget.dart';
 import 'package:cart_app/ui/widgets/cart_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
 
 class CartScreen extends StatelessWidget {
-   CartScreen({super.key});
-   final List<ProductModel> products=AppConstants.products;
+   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+
     return Scaffold(
       backgroundColor: AppColors.whiteGrey,
       body: SafeArea(child: Padding(
@@ -20,18 +21,20 @@ class CartScreen extends StatelessWidget {
           crossAxisAlignment: .stretch,
           children: [
             buildHeader(context),
-            buildTotalPrice(),
+            buildTotalPrice(context),
             SizedBox(height: 16,),
-            Text("4 Items",style: AppTextStyle.mediumGrey12Regular.copyWith(fontSize: 14),textAlign: .start,),
+           if(cart.products.isNotEmpty) Text("${cart.products.length} Items",style: AppTextStyle.mediumGrey12Regular.copyWith(fontSize: 14),textAlign: .start,),
             SizedBox(height: 8,),
-          Expanded(child: ListView.builder(
-        itemCount: products.length,
+          Expanded(child: cart.products.isEmpty
+              ? const Center(child: Text("Your cart is empty!")):
+          ListView.builder(
+        itemCount:cart.products.length,
           itemBuilder: (context,index)=>Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: CartWidget(product: products[index]),
+            child: CartWidget(product: cart.products[index]),
           ))
           ),
-ButtonWidget()
+           ButtonWidget()
           ],
         ),
       )),
@@ -50,22 +53,26 @@ ButtonWidget()
           Icon(Icons.shopping_cart_outlined, color: AppColors.darkBlue,)
         ],
       );
-  Container buildTotalPrice() => Container(
-    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 24),
-    decoration: BoxDecoration(
-      color: AppColors.white,
-      borderRadius: BorderRadius.circular(16)
-    ),
-    child: Column(
-      children: [
-        buildTotalRow("Items Total","96,449"),
-        SizedBox(height:16 ,),
-        buildShippingRow(),
-        SizedBox(height:16 ,),
-        buildTotalRow("Total","96,449"),
-      ],
-    ),
-  );
+  Container buildTotalPrice(BuildContext context){
+    final cartTotalPrice=context.watch<CartProvider>();
+    return Container(
+
+      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 24),
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16)
+      ),
+      child: Column(
+        children: [
+          buildTotalRow("Items Total","${cartTotalPrice.totalPrice}"),
+          SizedBox(height:16 ,),
+          buildShippingRow(),
+          SizedBox(height:16 ,),
+          buildTotalRow("Total","${cartTotalPrice.totalPrice}"),
+        ],
+      ),
+    );
+  }
 
 Row  buildTotalRow(String s, String u)=>Row(
   children: [
@@ -85,4 +92,5 @@ Row  buildShippingRow()=>Row(
 
   ],
 );
+
 }

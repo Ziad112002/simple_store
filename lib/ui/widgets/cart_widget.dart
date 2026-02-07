@@ -1,13 +1,19 @@
 import 'package:cart_app/ui/model/product_model.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_text_style.dart';
 
-class CartWidget extends StatelessWidget {
+class CartWidget extends StatefulWidget {
   const CartWidget({super.key,required this.product});
   final ProductModel product;
 
+  @override
+  State<CartWidget> createState() => _CartWidgetState();
+}
+
+class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,12 +40,12 @@ class CartWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              product.name,
+                              widget.product.name,
                               style: AppTextStyle.black12Regular,
                               textAlign: .start,
                             ),
                             Text(
-                              product.desc,
+                              widget.product.desc,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyle.mediumGrey12Regular,
@@ -49,7 +55,9 @@ class CartWidget extends StatelessWidget {
                         ),
                       ),
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          context.read<CartProvider>().removeFromCart(widget.product);
+                        },
                         child: Container(
 
                           decoration: BoxDecoration(
@@ -69,7 +77,7 @@ class CartWidget extends StatelessWidget {
                   Row(
                     children: [
                     Text("EGP ",style: AppTextStyle.mediumGrey12Regular,),
-                    Text("${product.price.toInt()}",style: AppTextStyle.black14SemiBold,),
+                    Text("${widget.product.price.toInt()}",style: AppTextStyle.black14SemiBold,),
                     Spacer(),
                     Container(
                       padding: EdgeInsets.all(4),
@@ -85,7 +93,12 @@ class CartWidget extends StatelessWidget {
                         children: [
                       InkWell(
                         onTap: (){
+                          if(widget.product.mount>1){
+                            widget.product.mount--;
+                            setState(() {
 
+                            });
+                          }
                         },
                         child: Container(
 
@@ -99,10 +112,15 @@ class CartWidget extends StatelessWidget {
                       ),
                           SizedBox(width: 8,),
 
-                          Text("${product.mount}",style: AppTextStyle.darkBlue14Medium,),
+                          Text("${widget.product.mount}",style: AppTextStyle.darkBlue14Medium,),
                       SizedBox(width: 8,),
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                         widget.product.mount++;
+                         setState(() {
+
+                         });
+                        },
                         child: Container(
 
 
@@ -128,6 +146,7 @@ class CartWidget extends StatelessWidget {
       ),
     );
   }
+
   Widget buildProductImage(BuildContext context) => Container(
     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
     height: MediaQuery.of(context).size.height*.112,
@@ -136,7 +155,6 @@ class CartWidget extends StatelessWidget {
       color: AppColors.grey,
       borderRadius: BorderRadius.circular(16),
     ),
-    child: Center(child: Image.asset(product.imagePath)),
+    child: Center(child: Image.asset(widget.product.imagePath)),
   );
-
 }

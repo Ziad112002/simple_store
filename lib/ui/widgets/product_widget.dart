@@ -1,11 +1,14 @@
 import 'package:cart_app/ui/model/product_model.dart';
+import 'package:cart_app/ui/providers/cart_provider.dart';
 import 'package:cart_app/ui/utils/app_colors.dart';
 import 'package:cart_app/ui/utils/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductWidget extends StatelessWidget {
   const ProductWidget({super.key, required this.product});
   final ProductModel product;
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                   buildRateRow(),
 
-                  buildPriceRow(),
+                  buildPriceRow(context),
                 ],
               ),
             ),
@@ -57,14 +60,16 @@ class ProductWidget extends StatelessWidget {
     ],
   );
 
-  Widget buildPriceRow() => Row(
+  Widget buildPriceRow(BuildContext context) => Row(
     mainAxisAlignment: .start,
     children: [
       Text("${product.price.toInt()} EGP", style: AppTextStyle.black12SemiBold),
       Spacer(),
       IconButton(
         icon: Icon(Icons.shopping_cart_checkout, color: AppColors.darkBlue),
-        onPressed: () {},
+        onPressed: () {
+          context.read<CartProvider>().addToCart(product);
+        },
       ),
     ],
   );
