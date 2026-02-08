@@ -50,7 +50,7 @@ class ProductsScreen extends StatelessWidget {
      Spacer(),
      IconButton(onPressed: (){
        Navigator.push(context, MaterialPageRoute(builder: (context)=>CartScreen()));
-     }, icon: Icon(Icons.shopping_cart,color: AppColors.darkBlue,))
+     }, icon: ImageIcon(AssetImage(AppAssets.cartIcon),color: AppColors.darkBlue,))
    ],
  );
 }

@@ -9,4 +9,8 @@ abstract final class AppAssets {
   static const String radio="${_pathBase}recorder.png";
   static const String watch="${_pathBase}watch.png";
   static const String appLogo="${_pathBase}app_logo.png";
+  static const String addToCartIcon="${_pathBase}add_cart.png";
+  static const String cartIcon="${_pathBase}cart_logo.png";
+  static const String deleteIcon="${_pathBase}delete.png";
+  static const String doneIcon="${_pathBase}done_icon.png";
 }

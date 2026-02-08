@@ -1,8 +1,10 @@
 import 'package:cart_app/ui/model/product_model.dart';
 import 'package:cart_app/ui/utils/app_assets.dart';
+import 'package:intl/intl.dart';
 
 abstract final class AppConstants {
- static  ProductModel lg = ProductModel(
+  static   var formatNum = NumberFormat('#,###');
+  static  ProductModel lg = ProductModel(
    name:"TV Samsung",
     imagePath: AppAssets.lg,
     desc: "Samsung 65-Inch Neo QLED 4K Smart TV QA6...",

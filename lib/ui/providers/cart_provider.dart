@@ -25,7 +25,12 @@ class CartProvider extends ChangeNotifier {
   }
 
   void removeFromCart(ProductModel product) {
-    products.remove(product);
+    if(product.mount>1){
+     product.mount--;
+    }else{
+      products.remove(product);
+    }
+
     notifyListeners();
   }
 
